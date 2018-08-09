@@ -1,5 +1,6 @@
 package com.glis.network.networktype;
 
+import com.glis.network.codec.SubscribeMessageDecoder;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -47,5 +48,7 @@ public class Both implements NetworkType {
         upstream.passThrough(channelHandlerContext);
         logger.info("Passing though to " + Downstream.class.getSimpleName() +  "...");
         downstream.passThrough(channelHandlerContext);
+        //We simply remove it here so we don't have to tamper with the non-shared code.
+        channelHandlerContext.pipeline().remove(SubscribeMessageDecoder.class);
     }
 }

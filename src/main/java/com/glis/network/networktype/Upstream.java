@@ -1,6 +1,7 @@
 package com.glis.network.networktype;
 
 import com.glis.network.codec.NetworkMessageEncoder;
+import com.glis.network.codec.SubscribeMessageDecoder;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,7 @@ public class Upstream implements NetworkType {
     @Override
     public void passThrough(ChannelHandlerContext channelHandlerContext) {
         channelHandlerContext.pipeline().addLast(new NetworkMessageEncoder());
+        channelHandlerContext.pipeline().addFirst(new SubscribeMessageDecoder());
         logger.info(getClass().getSimpleName() + " has been linked.");
     }
 }

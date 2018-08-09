@@ -2,15 +2,14 @@ package com.glis.input.handlers;
 
 import com.glis.DomainController;
 import com.glis.input.MetaData;
-import com.glis.input.handlers.InputHandler;
-import com.glis.message.ShutdownNetworkMessage;
+import com.glis.message.ShutdownMessage;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Glis
  */
 @Component
-public class ShutdownInputHandler implements InputHandler<ShutdownNetworkMessage> {
+public class ShutdownInputHandler implements InputHandler<ShutdownMessage> {
     /**
      * The {@link DomainController} to use to shut everything down.
      */
@@ -28,22 +27,22 @@ public class ShutdownInputHandler implements InputHandler<ShutdownNetworkMessage
      */
     @Override
     public boolean canHandle(Object o) {
-        return o instanceof ShutdownNetworkMessage;
+        return o instanceof ShutdownMessage;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ShutdownNetworkMessage convert(Object o) {
-        return (ShutdownNetworkMessage)o;
+    public ShutdownMessage convert(Object o) {
+        return (ShutdownMessage)o;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Object handleInput(ShutdownNetworkMessage input, MetaData metaData) {
+    public Object handleInput(ShutdownMessage input, MetaData metaData) {
         domainController.shutdown(input.getReason());
         return null;
     }

@@ -1,9 +1,9 @@
 package com.glis.network;
 
-import com.glis.message.NetworkMessage;
-import com.glis.message.PlaySongNetworkMessage;
-import com.glis.message.ShutdownNetworkMessage;
-import com.glis.message.SubscribeNetworkMessage;
+import com.glis.message.Message;
+import com.glis.message.PlaySongMessage;
+import com.glis.message.ShutdownMessage;
+import com.glis.message.SubscribeMessage;
 import com.glis.message.library.MappedMessageLibrary;
 import com.glis.message.library.MessageLibrary;
 import com.glis.network.networktype.Both;
@@ -18,17 +18,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class NetworkConfiguration {
     @Bean
-    public NetworkMessage[] networkMessages() {
-        return new NetworkMessage[]{
-                new ShutdownNetworkMessage(),
-                new SubscribeNetworkMessage(),
-                new PlaySongNetworkMessage()
+    public Message[] networkMessages() {
+        return new Message[]{
+                new ShutdownMessage(),
+                new SubscribeMessage(),
+                new PlaySongMessage()
         };
     }
 
     @Bean
-    public MessageLibrary messageLibrary(NetworkMessage... networkMessages) {
-        return new MappedMessageLibrary(networkMessages);
+    public MessageLibrary messageLibrary(Message... messages) {
+        return new MappedMessageLibrary(messages);
     }
 
     @Bean

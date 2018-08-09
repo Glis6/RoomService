@@ -3,7 +3,7 @@ package com.glis.input.handlers;
 import com.glis.DomainController;
 import com.glis.exceptions.UnknownHandlerException;
 import com.glis.input.MetaData;
-import com.glis.message.SubscribeNetworkMessage;
+import com.glis.message.SubscribeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  * @author Glis
  */
 @Component
-public class SubscribeInputHandler implements InputHandler<SubscribeNetworkMessage> {
+public class SubscribeInputHandler implements InputHandler<SubscribeMessage> {
     /**
      * The {@link Logger} for this class.
      */
@@ -37,22 +37,22 @@ public class SubscribeInputHandler implements InputHandler<SubscribeNetworkMessa
      */
     @Override
     public boolean canHandle(Object o) {
-        return o instanceof SubscribeNetworkMessage;
+        return o instanceof SubscribeMessage;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public SubscribeNetworkMessage convert(Object o) {
-        return (SubscribeNetworkMessage)o;
+    public SubscribeMessage convert(Object o) {
+        return (SubscribeMessage)o;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Object handleInput(SubscribeNetworkMessage input, MetaData metaData) {
+    public Object handleInput(SubscribeMessage input, MetaData metaData) {
         for (String subscribeParameter : input.getSubscribeParameters()) {
             try {
                 domainController.handleOutput(subscribeParameter, metaData.getInputSender());

@@ -1,7 +1,7 @@
 package com.glis.output.handlers;
 
 import com.glis.DomainController;
-import com.glis.message.CurrentSongNetworkMessage;
+import com.glis.message.CurrentSongMessage;
 import com.glis.output.MessageSender;
 import com.glis.spotify.SpotifyController;
 import io.reactivex.disposables.Disposable;
@@ -47,7 +47,7 @@ public class CurrentSongOutputHandler implements OutputHandler {
     @Override
     public void handle(MessageSender messageSender) throws Exception {
         logger.info("Attempting to link current song...");
-        final Disposable disposable = spotifyController.getCurrentSongObservable().subscribe(s -> messageSender.send(new CurrentSongNetworkMessage(s)));
+        final Disposable disposable = spotifyController.getCurrentSongObservable().subscribe(s -> messageSender.send(new CurrentSongMessage(s)));
         messageSender.onClose(disposable::dispose);
         logger.info("Current song linked.");
     }

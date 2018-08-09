@@ -1,7 +1,7 @@
 package com.glis.message.library;
 
 import com.glis.exceptions.InvalidTypeException;
-import com.glis.message.NetworkMessage;
+import com.glis.message.Message;
 import lombok.NonNull;
 
 /**
@@ -12,5 +12,5 @@ public interface MessageLibrary {
      * @param identifier The identifier that we're looking for.
      * @return The class that the identifier is valid for.
      */
-    Class<? extends NetworkMessage> getClassForIdentifier(@NonNull String identifier) throws InvalidTypeException;
+    Class<? extends Message> getClassForIdentifier(@NonNull String identifier) throws InvalidTypeException;
 }

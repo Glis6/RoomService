@@ -4,7 +4,6 @@ import com.glis.ApplicationContextProvider;
 import com.glis.exceptions.InvalidTypeException;
 import com.glis.network.networktype.NetworkType;
 import com.glis.network.networktype.TypeIdentifier;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.springframework.context.ApplicationContext;
@@ -16,7 +15,12 @@ import java.util.logging.Logger;
 /**
  * @author Glis
  */
-public final class NetworkTypeHandler extends ChannelInboundHandlerAdapter {
+public final class AuthorizationHandler extends ChannelInboundHandlerAdapter {
+    /**
+     * The length of the header.
+     */
+    private final static int HEADER_LENGTH = Integer.SIZE / Byte.SIZE;
+
     /**
      * The {@link Logger} for this class.
      */
@@ -30,7 +34,7 @@ public final class NetworkTypeHandler extends ChannelInboundHandlerAdapter {
     /**
      * Creates an instance with all beans that are
      */
-    NetworkTypeHandler() {
+    AuthorizationHandler() {
         ApplicationContext context = ApplicationContextProvider.getApplicationContext();
         final Map<Integer, NetworkType> networkTypes = new HashMap<>();
         for (NetworkType networkType : context.getBeansOfType(NetworkType.class).values()) {
@@ -48,19 +52,15 @@ public final class NetworkTypeHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf byteBuf = (ByteBuf) msg;
-        try {
-            if (byteBuf.isReadable()) {
-                final int networkType = byteBuf.readInt();
-                if (!networkTypes.containsKey(networkType)) {
-                    throw new InvalidTypeException(String.format("The given type does not exist. Received: %d", networkType));
-                }
-                logger.info("Found a matching " + NetworkType.class.getSimpleName() + ", linking...");
-                networkTypes.get(networkType).link(ctx);
-            }
-        } finally {
-            byteBuf.release();
+        if(!(msg instanceof AuthorizationMessage)) {
+            throw new InvalidTypeException("Got a message of the wrong format. Expected a " + AuthorizationMessage.class.getSimpleName() + " message.");
         }
+        final AuthorizationMessage authorizationMessage = (AuthorizationMessage)msg;
+        if (!networkTypes.containsKey(authorizationMessage.getNetworkType())) {
+            throw new InvalidTypeException(String.format("The given type does not exist. Received: %d", authorizationMessage.getNetworkType()));
+        }
+        logger.info("Found a matching " + NetworkType.class.getSimpleName() + ", linking...");
+        networkTypes.get(authorizationMessage.getNetworkType()).link(ctx, authorizationMessage.getNetworkName());
     }
 
 }

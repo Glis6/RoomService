@@ -6,7 +6,7 @@ import lombok.Data;
  * @author Glis
  */
 @Data
-public final class SubscribeNetworkMessage implements NetworkMessage {
+public final class SubscribeMessage implements Message {
     /**
      * An array of types to subscribe to.
      */
@@ -15,13 +15,13 @@ public final class SubscribeNetworkMessage implements NetworkMessage {
     /**
      * @param subscribeParameters An array of types to subscribe to.
      */
-    public SubscribeNetworkMessage(String[] subscribeParameters) {
+    public SubscribeMessage(String[] subscribeParameters) {
         this.subscribeParameters = subscribeParameters;
     }
 
     /**
      * A default constructor.
      */
-    public SubscribeNetworkMessage() {
+    public SubscribeMessage() {
     }
 }

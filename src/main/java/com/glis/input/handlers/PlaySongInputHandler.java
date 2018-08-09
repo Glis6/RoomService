@@ -2,7 +2,7 @@ package com.glis.input.handlers;
 
 import com.glis.DomainController;
 import com.glis.input.MetaData;
-import com.glis.message.PlaySongNetworkMessage;
+import com.glis.message.PlaySongMessage;
 import com.glis.spotify.SpotifyController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @author Glis
  */
 @Component
-public class PlaySongInputHandler implements InputHandler<PlaySongNetworkMessage> {
+public class PlaySongInputHandler implements InputHandler<PlaySongMessage> {
     /**
      * The {@link SpotifyController} for this instance.
      */
@@ -30,22 +30,22 @@ public class PlaySongInputHandler implements InputHandler<PlaySongNetworkMessage
      */
     @Override
     public boolean canHandle(Object o) {
-        return o instanceof PlaySongNetworkMessage;
+        return o instanceof PlaySongMessage;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public PlaySongNetworkMessage convert(Object o) {
-        return (PlaySongNetworkMessage)o;
+    public PlaySongMessage convert(Object o) {
+        return (PlaySongMessage)o;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Object handleInput(PlaySongNetworkMessage input, MetaData metaData) {
+    public Object handleInput(PlaySongMessage input, MetaData metaData) {
         spotifyController.setCurrentSong(input.getSongToPlay());
         return null;
     }

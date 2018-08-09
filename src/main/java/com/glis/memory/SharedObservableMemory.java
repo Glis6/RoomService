@@ -1,7 +1,6 @@
 package com.glis.memory;
 
 import io.reactivex.Observable;
-import io.reactivex.subjects.Subject;
 
 /**
  * @author Glis
@@ -16,13 +15,13 @@ public interface SharedObservableMemory<K> {
      */
     <T> Observable<T> getObservable(K key, Class<T> clazz) throws Exception;
     /**
-     * Gets or creates a subject for the given key.
+     * Puts a value in the memory.
      *
      * @param key The key that we're looking for.
+     * @param value The value that we're putting in.
      * @param <T> The type of the object.
-     * @return The current state of the object.
      */
-    <T> Subject<T> getSubject(K key, Class<T> clazz) throws Exception;
+    <T> void setValue(K key, T value) throws Exception;
 
     /**
      * Deletes the observable and unlinks everything listening to it.

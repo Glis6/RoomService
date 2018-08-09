@@ -3,7 +3,7 @@ package com.glis.message;
 /**
  * @author Glis
  */
-public interface NetworkMessage {
+public interface Message {
     /**
      * The opcode for the network message.
      */

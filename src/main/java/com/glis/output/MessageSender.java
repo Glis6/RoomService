@@ -1,6 +1,6 @@
 package com.glis.output;
 
-import com.glis.message.NetworkMessage;
+import com.glis.message.Message;
 
 /**
  * @author Glis
@@ -8,9 +8,9 @@ import com.glis.message.NetworkMessage;
 public interface MessageSender {
     /**
      * Enables to send a message on the network.
-     * @param networkMessage A message to send on the network.
+     * @param message A message to send on the network.
      */
-    void send(NetworkMessage networkMessage);
+    void send(Message message);
 
     /**
      * Adds a {@link Runnable} to execute on closing.

@@ -6,7 +6,7 @@ import lombok.Data;
  * @author Glis
  */
 @Data
-public class CurrentSongNetworkMessage implements NetworkMessage {
+public class CurrentSongMessage implements Message {
     /**
      * The song that is currently playing.
      */
@@ -15,13 +15,13 @@ public class CurrentSongNetworkMessage implements NetworkMessage {
     /**
      * @param currentSong The song that is currently playing.
      */
-    public CurrentSongNetworkMessage(String currentSong) {
+    public CurrentSongMessage(String currentSong) {
         this.currentSong = currentSong;
     }
 
     /**
      * A default constructor.
      */
-    public CurrentSongNetworkMessage() {
+    public CurrentSongMessage() {
     }
 }

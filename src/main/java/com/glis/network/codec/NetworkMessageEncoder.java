@@ -1,6 +1,6 @@
 package com.glis.network.codec;
 
-import com.glis.message.NetworkMessage;
+import com.glis.message.Message;
 import com.google.gson.Gson;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -15,7 +15,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * @author Glis
  */
-public class NetworkMessageEncoder extends MessageToByteEncoder<NetworkMessage> {
+public class NetworkMessageEncoder extends MessageToByteEncoder<Message> {
     /**
      * The {@link Logger} for this class.
      */
@@ -30,7 +30,7 @@ public class NetworkMessageEncoder extends MessageToByteEncoder<NetworkMessage> 
      * {@inheritDoc}
      */
     @Override
-    protected void encode(ChannelHandlerContext channelHandlerContext, NetworkMessage networkMessage, ByteBuf out) throws Exception {
+    protected void encode(ChannelHandlerContext channelHandlerContext, Message networkMessage, ByteBuf out) throws Exception {
         logger.info("Encoding message...");
         byte[] typeIdentifier = networkMessage.getTypeIdentifier().getBytes(UTF_8);
         byte[] typeHeader = ByteBuffer.allocate(Integer.SIZE / Byte.SIZE).putInt(typeIdentifier.length).array();

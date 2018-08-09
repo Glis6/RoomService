@@ -6,7 +6,7 @@ import lombok.Data;
  * @author Glis
  */
 @Data
-public final class ShutdownNetworkMessage implements NetworkMessage {
+public final class ShutdownMessage implements Message {
     /**
      * The reason for shutting down the network.
      */
@@ -15,13 +15,13 @@ public final class ShutdownNetworkMessage implements NetworkMessage {
     /**
      * @param reason The reason for shutting down the network.
      */
-    public ShutdownNetworkMessage(String reason) {
+    public ShutdownMessage(String reason) {
         this.reason = reason;
     }
 
     /**
      * A default constructor.
      */
-    public ShutdownNetworkMessage() {
+    public ShutdownMessage() {
     }
 }

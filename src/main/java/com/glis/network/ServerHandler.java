@@ -3,7 +3,7 @@ package com.glis.network;
 import com.glis.DomainController;
 import com.glis.input.InputSender;
 import com.glis.input.SimpleMetaData;
-import com.glis.message.NetworkMessage;
+import com.glis.message.Message;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -32,6 +32,11 @@ public final class ServerHandler extends ChannelInboundHandlerAdapter implements
     private Channel channel;
 
     /**
+     * The name of this network connection.
+     */
+    private final String networkName;
+
+    /**
      * All {@link Runnable}s to execute when the channel closes.
      */
     private final Set<Runnable> executeOnClose = new HashSet<>();
@@ -39,8 +44,9 @@ public final class ServerHandler extends ChannelInboundHandlerAdapter implements
     /**
      * @param domainController The {@link DomainController} to dispatch the traffic to.
      */
-    public ServerHandler(DomainController domainController) {
+    public ServerHandler(DomainController domainController, final String networkName) {
         this.domainController = domainController;
+        this.networkName = networkName;
     }
 
     /**
@@ -64,9 +70,9 @@ public final class ServerHandler extends ChannelInboundHandlerAdapter implements
      * {@inheritDoc}
      */
     @Override
-    public void send(NetworkMessage networkMessage) {
+    public void send(Message message) {
         if(channel != null) {
-            channel.writeAndFlush(networkMessage);
+            channel.writeAndFlush(message);
         }
     }
 
@@ -94,6 +100,6 @@ public final class ServerHandler extends ChannelInboundHandlerAdapter implements
 
     @Override
     public String getIdentifier() {
-        return "TODO"; //TODO
+        return networkName;
     }
 }

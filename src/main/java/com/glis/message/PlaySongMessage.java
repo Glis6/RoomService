@@ -6,7 +6,7 @@ import lombok.Data;
  * @author Glis
  */
 @Data
-public class PlaySongNetworkMessage implements NetworkMessage {
+public class PlaySongMessage implements Message {
     /**
      * The song that is gonna be played.
      */

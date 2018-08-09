@@ -1,7 +1,7 @@
 package com.glis.message.library;
 
 import com.glis.exceptions.InvalidTypeException;
-import com.glis.message.NetworkMessage;
+import com.glis.message.Message;
 import lombok.NonNull;
 
 import java.util.HashMap;
@@ -13,16 +13,16 @@ import java.util.Map;
 public final class MappedMessageLibrary implements MessageLibrary {
     /**
      * A {@link Map} that holds all possible network message types.
-     * All types are mapped by the {@link NetworkMessage#getTypeIdentifier()}.
+     * All types are mapped by the {@link Message#getTypeIdentifier()}.
      */
-    private final Map<String, Class<? extends NetworkMessage>> messageTypes = new HashMap<>();
+    private final Map<String, Class<? extends Message>> messageTypes = new HashMap<>();
 
     /**
-     * @param networkMessages All network messages that need to be initialized.
+     * @param messages All network messages that need to be initialized.
      */
-    public MappedMessageLibrary(NetworkMessage... networkMessages) {
-        for (NetworkMessage networkMessage : networkMessages) {
-            messageTypes.put(networkMessage.getTypeIdentifier(), networkMessage.getClass());
+    public MappedMessageLibrary(Message... messages) {
+        for (Message message : messages) {
+            messageTypes.put(message.getTypeIdentifier(), message.getClass());
         }
     }
 
@@ -30,7 +30,7 @@ public final class MappedMessageLibrary implements MessageLibrary {
      * {@inheritDoc}
      */
     @Override
-    public Class<? extends NetworkMessage> getClassForIdentifier(final @NonNull String identifier) throws InvalidTypeException {
+    public Class<? extends Message> getClassForIdentifier(final @NonNull String identifier) throws InvalidTypeException {
         if(identifier == null) {
             throw new InvalidTypeException("The identifier cannot be null.");
         }

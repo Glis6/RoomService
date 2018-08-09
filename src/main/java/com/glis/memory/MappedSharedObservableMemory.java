@@ -35,14 +35,18 @@ public class MappedSharedObservableMemory<K> implements SharedObservableMemory<K
      * {@inheritDoc}
      */
     @Override
-    public <T> Subject<T> getSubject(K key, Class<T> clazz) throws Exception {
+    public <T> void setValue(K key, T value) throws Exception {
         if(key == null) {
             throw new KeyTypeException("Key cannot be null.");
         }
+        Subject<T> subject;
         if(!map.containsKey(key)) {
-            map.put(key, BehaviorSubject.create());
+            subject = BehaviorSubject.create();
+            map.put(key, subject);
+        } else {
+            subject = (Subject<T>)map.get(key);
         }
-        return (Subject<T>)map.get(key);
+        subject.onNext(value);
     }
 
     /**

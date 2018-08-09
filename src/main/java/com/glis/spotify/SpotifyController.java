@@ -1,8 +1,8 @@
 package com.glis.spotify;
 
 import com.glis.memory.Memory;
+import com.wrapper.spotify.SpotifyApi;
 import io.reactivex.Observable;
-import io.reactivex.subjects.Subject;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +17,11 @@ public final class SpotifyController {
      * The {@link Logger} to use for this class.
      */
     private final Logger logger = Logger.getLogger(getClass().getSimpleName());
+
+    /**
+     * The {@link SpotifyApi} to use.
+     */
+    private SpotifyApi spotifyApi;
 
     /**
      * The {@link Memory} of the application.
@@ -37,8 +42,7 @@ public final class SpotifyController {
      */
     public void setCurrentSong(String songId) {
         try {
-            final Subject<String> currentSong = memory.getSharedObservableMemory().getSubject(CURRENTLY_PLAYING_SONG_KEY, String.class);
-            currentSong.onNext(songId);
+            memory.getSharedObservableMemory().setValue(CURRENTLY_PLAYING_SONG_KEY, songId);
         } catch(ClassCastException e) {
             logger.log(Level.WARNING, "'" + CURRENTLY_PLAYING_SONG_KEY + "' is saved in a wrong state.", e);
         } catch (Exception e) {

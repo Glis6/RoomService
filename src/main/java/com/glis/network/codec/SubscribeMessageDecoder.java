@@ -1,8 +1,6 @@
 package com.glis.network.codec;
 
-import com.glis.exceptions.InvalidTypeException;
-import com.glis.message.Message;
-import com.glis.message.library.MessageLibrary;
+import com.glis.message.SubscribeMessage;
 import com.google.gson.Gson;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -11,13 +9,14 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * A decoder that only decodes subscribe messages, and ignores everything else.
+ *
  * @author Glis
  */
-public class NetworkMessageDecoder extends ByteToMessageDecoder {
+public class SubscribeMessageDecoder extends ByteToMessageDecoder {
 
     /**
      * The length of the header.
@@ -35,24 +34,11 @@ public class NetworkMessageDecoder extends ByteToMessageDecoder {
     private final Logger logger = Logger.getLogger(getClass().getName());
 
     /**
-     * The {@link MessageLibrary} to use to decode which message goes where.
-     */
-    private final MessageLibrary messageLibrary;
-
-    /**
-     * @param messageLibrary The {@link MessageLibrary} to use to decode which message goes where.
-     */
-    public NetworkMessageDecoder(MessageLibrary messageLibrary) {
-        this.messageLibrary = messageLibrary;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         try {
-            logger.info("Decoding message...");
             //First we check if we have a type header.
             if (in.readableBytes() < HEADER_LENGTH) {
                 throw new Exception("Received a message with invalid length.");
@@ -75,10 +61,9 @@ public class NetworkMessageDecoder extends ByteToMessageDecoder {
             in.readBytes(encodedType, 0, typeLength);
             final String type = new String(encodedType, StandardCharsets.UTF_8);
 
-            logger.info("Decoded type as " + type);
-
-            //Now we check the library to see if this is a valid type.
-            final Class<? extends Message> networkMessageClass = messageLibrary.getClassForIdentifier(type);
+            if (!type.equals(SubscribeMessage.class.getSimpleName())) {
+                throw new Exception("Received a message that is not a subscription request.");
+            }
 
             //Next we decode the JSON string.
             //We start by taking the message header.
@@ -104,9 +89,7 @@ public class NetworkMessageDecoder extends ByteToMessageDecoder {
             final String messageAsJson = new String(encodedMessage, StandardCharsets.UTF_8);
 
             //Then we unpack the object from JSON.
-            out.add(GSON.fromJson(messageAsJson, networkMessageClass));
-        } catch (InvalidTypeException e) {
-            logger.log(Level.WARNING, "An error was thrown when getting the message type.", e);
+            out.add(GSON.fromJson(messageAsJson, SubscribeMessage.class));
         } finally {
             in.clear();
         }
