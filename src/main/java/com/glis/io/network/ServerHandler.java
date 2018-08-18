@@ -76,6 +76,9 @@ public final class ServerHandler extends ChannelInboundHandlerAdapter implements
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
         executeOnClose.forEach(Runnable::run);
@@ -99,6 +102,9 @@ public final class ServerHandler extends ChannelInboundHandlerAdapter implements
         cause.printStackTrace();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getIdentifier() {
         return networkName;
