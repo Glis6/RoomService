@@ -17,6 +17,7 @@
         <spring.version>5.0.8.RELEASE</spring.version>
         <spotify-web-api-java.version>2.0.4</spotify-web-api-java.version>
         <firebase.version>6.3.0</firebase.version>
+        <network-core.version>1.0.0</network-core.version>
     </properties>
 
     <build>
@@ -132,5 +133,21 @@
             <artifactId>firebase-admin</artifactId>
             <version>${firebase.version}</version>
         </dependency>
+        <dependency>
+            <groupId>RoomService</groupId>
+            <artifactId>NetworkCore</artifactId>
+            <version>${network-core.version}</version>
+        </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>RoomService-NetworkCore-mvn-repo</id>
+            <url>https://raw.github.com/Glis6/RoomService-NetworkCore/mvn-repo/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
 </project>

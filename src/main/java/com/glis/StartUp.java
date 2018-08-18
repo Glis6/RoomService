@@ -1,6 +1,6 @@
 package com.glis;
 
-import com.glis.firebase.FirebaseBootstrap;
+import com.glis.io.firebase.FirebaseBootstrap;
 import com.glis.util.ShutdownHook;
 
 /**

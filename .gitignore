@@ -7,4 +7,5 @@
 /.gradle/
 /build/
 *.iml
-/ignored/
+*.env
+/ignored
