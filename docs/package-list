@@ -1,0 +1,17 @@
+com.glis
+com.glis.domain
+com.glis.domain.memory
+com.glis.domain.model
+com.glis.exceptions
+com.glis.io.firebase
+com.glis.io.network
+com.glis.io.network.input.handlers
+com.glis.io.network.networktype
+com.glis.io.repository
+com.glis.log
+com.glis.log.input
+com.glis.log.model
+com.glis.security
+com.glis.spotify
+com.glis.spotify.output
+com.glis.util
