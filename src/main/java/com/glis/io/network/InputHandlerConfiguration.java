@@ -2,6 +2,7 @@ package com.glis.io.network;
 
 import com.glis.domain.DomainController;
 import com.glis.io.network.input.handlers.*;
+import com.glis.log.input.MessageLogInputHandler;
 import com.glis.util.HandlerLibrary;
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +20,8 @@ public class InputHandlerConfiguration {
                 new CommandLineEchoInputHandler(),
                 new ShutdownInputHandler(domainController),
                 new SubscribeInputHandler(domainController),
-                new ProfileInputHandler(domainController)
+                new ProfileInputHandler(domainController),
+                new MessageLogInputHandler(domainController)
         });
     }
 }

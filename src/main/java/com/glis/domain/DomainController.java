@@ -9,6 +9,7 @@ import com.glis.io.network.input.dispatcher.InputDispatcher;
 import com.glis.io.network.output.MessageSender;
 import com.glis.io.network.output.dispatcher.OutputDispatcher;
 import com.glis.io.repository.RepositoryManager;
+import com.glis.log.ChannelLogController;
 import com.glis.spotify.SpotifyController;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -47,6 +48,12 @@ public class DomainController {
     private final SpotifyController spotifyController;
 
     /**
+     * The {@link ChannelLogController} that logs all channel activity.
+     */
+    @Getter
+    private final ChannelLogController channelLogController;
+
+    /**
      * The {@link RepositoryManager} that handles all database traffic.
      */
     private final RepositoryManager repositoryManager;
@@ -66,6 +73,7 @@ public class DomainController {
         this.inputDispatcher = inputDispatcher;
         this.outputDispatcher = outputDispatcher;
         this.spotifyController = new SpotifyController(memory);
+        this.channelLogController = new ChannelLogController(repositoryManager.getLogRepository());
         this.memory = memory;
         this.repositoryManager = repositoryManager;
     }

@@ -1,22 +1,25 @@
 package com.glis;
 
 import com.glis.domain.DomainController;
+import com.glis.domain.memory.Memory;
+import com.glis.domain.memory.StringMemory;
 import com.glis.io.firebase.FirebaseMemory;
+import com.glis.io.firebase.FirebasePushIdGenerator;
 import com.glis.io.firebase.FirebaseRepositoryManager;
+import com.glis.io.firebase.SwftvsnFirebasePushIdGenerator;
 import com.glis.io.network.InputHandlerConfiguration;
+import com.glis.io.network.NetworkConfiguration;
+import com.glis.io.network.OutputHandlerConfiguration;
 import com.glis.io.network.input.InputHandlerLibrary;
 import com.glis.io.network.input.dispatcher.InputDispatcher;
 import com.glis.io.network.input.dispatcher.PriorityInputDispatcher;
 import com.glis.io.network.input.handlers.InputHandler;
-import com.glis.domain.memory.Memory;
-import com.glis.domain.memory.StringMemory;
-import com.glis.io.network.NetworkConfiguration;
-import com.glis.io.network.OutputHandlerConfiguration;
 import com.glis.io.network.output.OutputHandlerLibrary;
 import com.glis.io.network.output.dispatcher.OutputDispatcher;
 import com.glis.io.network.output.dispatcher.SimpleOutputDispatcher;
 import com.glis.io.network.output.handlers.OutputHandler;
 import com.glis.io.repository.RepositoryManager;
+import com.glis.log.LogConfiguration;
 import com.glis.util.HandlerLibrary;
 import com.google.firebase.database.FirebaseDatabase;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +33,8 @@ import org.springframework.context.annotation.Import;
 @Import({
         InputHandlerConfiguration.class,
         OutputHandlerConfiguration.class,
-        NetworkConfiguration.class
+        NetworkConfiguration.class,
+        LogConfiguration.class
 })
 public class SpringConfiguration {
 
@@ -65,7 +69,12 @@ public class SpringConfiguration {
     }
 
     @Bean
-    public RepositoryManager repositoryManager() {
-        return new FirebaseRepositoryManager();
+    public RepositoryManager repositoryManager(final FirebasePushIdGenerator firebasePushIdGenerator) {
+        return new FirebaseRepositoryManager(firebasePushIdGenerator);
+    }
+
+    @Bean
+    public FirebasePushIdGenerator firebasePushIdGenerator() {
+        return new SwftvsnFirebasePushIdGenerator();
     }
 }

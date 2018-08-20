@@ -10,6 +10,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -64,6 +65,7 @@ public final class ServerHandler extends ChannelInboundHandlerAdapter implements
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         channel = ctx.channel();
+        domainController.getChannelLogController().connected(channel.remoteAddress().toString(), channel.localAddress().toString(), getIdentifier());
     }
 
     /**
@@ -99,7 +101,10 @@ public final class ServerHandler extends ChannelInboundHandlerAdapter implements
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         ctx.close();
-        cause.printStackTrace();
+        //We ignore the closing message.
+        if(!cause.getMessage().equals("An existing connection was forcibly closed by the remote host")) {
+            logger.log(Level.WARNING, "An exception occurred on the channel " + getIdentifier() + ". Closing channel.", cause);
+        }
     }
 
     /**
@@ -108,5 +113,21 @@ public final class ServerHandler extends ChannelInboundHandlerAdapter implements
     @Override
     public String getIdentifier() {
         return networkName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getRemoteAddress() {
+        return channel.remoteAddress().toString();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getLocalAddress() {
+        return channel.localAddress().toString();
     }
 }

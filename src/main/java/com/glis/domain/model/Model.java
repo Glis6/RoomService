@@ -1,17 +1,13 @@
 package com.glis.domain.model;
 
-import com.google.cloud.firestore.annotation.Exclude;
-import com.google.cloud.firestore.annotation.IgnoreExtraProperties;
 import lombok.Data;
 import lombok.NonNull;
 
 @Data
-@IgnoreExtraProperties
 public class Model {
     /**
      * The id of the object.
      */
-    @Exclude
     public String id;
 
     /**

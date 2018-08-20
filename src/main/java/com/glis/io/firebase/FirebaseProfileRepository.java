@@ -6,6 +6,7 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
+import lombok.NonNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,9 +19,10 @@ import java.util.stream.Collectors;
 public class FirebaseProfileRepository extends FirebaseRepository<Profile> implements ProfileRepository {
     /**
      * @param firestore The {@link Firestore} that is used to access the database.
+     * @param firebasePushIdGenerator The {@link FirebasePushIdGenerator} that generates the push ids.
      */
-    FirebaseProfileRepository(Firestore firestore) {
-        super(firestore, Profile.class);
+    FirebaseProfileRepository(@NonNull final Firestore firestore, @NonNull final FirebasePushIdGenerator firebasePushIdGenerator) {
+        super(firestore, firebasePushIdGenerator, Profile.class);
     }
 
     /**
