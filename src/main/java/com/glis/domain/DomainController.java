@@ -64,6 +64,11 @@ public class DomainController {
     private final Memory<String, String> memory;
 
     /**
+     * The current amount of connected clients.
+     */
+    private int connectedClients = 0;
+
+    /**
      * @param inputDispatcher   The {@link InputDispatcher} used to send the input to the correct handler.
      * @param outputDispatcher  The {@link OutputDispatcher} used to link the output.
      * @param memory            The {@link Memory} of the application.
@@ -131,5 +136,49 @@ public class DomainController {
     public void shutdown(final @NonNull String reason) {
         logger.warning("Shutting down everything. Reason given: '" + reason + "'.");
         //TODO MAKE SHUTDOWN
+    }
+
+    /**
+     * Notifies the domain that a connection was made.
+     *
+     * @param remoteAddress The remote that is connected.
+     * @param localAddress The local address that is being connected to.
+     * @param networkName The name of the network that is connected.
+     */
+    public void notifyConnected(@NonNull final String remoteAddress, @NonNull final String localAddress, @NonNull final String networkName) {
+        getChannelLogController().connected(remoteAddress, localAddress, networkName);
+        try {
+            memory.getSharedObservableMemory().setValue("server_connections", Integer.toString(++connectedClients));
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Something went wrong adjusting the connected value in memory.", e);
+        }
+    }
+
+    /**
+     * Notifies the domain that a connection was broken.
+     *
+     * @param remoteAddress The remote that is connected.
+     * @param localAddress The local address that is being connected to.
+     * @param networkName The name of the network that is connected.
+     */
+    public void notifyDisconnected(@NonNull final String remoteAddress, @NonNull final String localAddress, @NonNull final String networkName) {
+        getChannelLogController().disconnected(remoteAddress, localAddress, networkName);
+        try {
+            memory.getSharedObservableMemory().setValue("server_connections", Integer.toString(--connectedClients));
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Something went wrong adjusting the connected value in memory.", e);
+        }
+    }
+
+    /**
+     * Displays the server as online.
+     */
+    public void serverOnline(@NonNull String host, int port) {
+        try {
+            memory.getSharedObservableMemory().setValue("server_state", "online");
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Something went wrong setting server state to online in memory.", e);
+        }
+        logger.info(String.format("Server is now online at '%s:%d' and accepting connections.", host, port));
     }
 }

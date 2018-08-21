@@ -65,7 +65,7 @@ public final class ServerHandler extends ChannelInboundHandlerAdapter implements
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         channel = ctx.channel();
-        domainController.getChannelLogController().connected(channel.remoteAddress().toString(), channel.localAddress().toString(), getIdentifier());
+        domainController.notifyConnected(channel.remoteAddress().toString(), channel.localAddress().toString(), getIdentifier());
     }
 
     /**
@@ -84,6 +84,7 @@ public final class ServerHandler extends ChannelInboundHandlerAdapter implements
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
         executeOnClose.forEach(Runnable::run);
+        domainController.notifyDisconnected(channel.remoteAddress().toString(), channel.localAddress().toString(), getIdentifier());
         logger.info("Channel has been unregistered.");
     }
 

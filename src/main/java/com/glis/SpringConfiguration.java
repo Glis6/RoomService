@@ -21,6 +21,7 @@ import com.glis.io.network.output.handlers.OutputHandler;
 import com.glis.io.repository.RepositoryManager;
 import com.glis.log.LogConfiguration;
 import com.glis.util.HandlerLibrary;
+import com.glis.util.ServerStateShutdown;
 import com.google.firebase.database.FirebaseDatabase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -76,5 +77,10 @@ public class SpringConfiguration {
     @Bean
     public FirebasePushIdGenerator firebasePushIdGenerator() {
         return new SwftvsnFirebasePushIdGenerator();
+    }
+
+    @Bean
+    public ServerStateShutdown serverStateShutdown(final Memory<String, String> memory) {
+        return new ServerStateShutdown(memory);
     }
 }

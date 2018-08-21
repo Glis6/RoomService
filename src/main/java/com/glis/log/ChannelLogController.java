@@ -52,14 +52,14 @@ public class ChannelLogController {
     /**
      * Logs an exception.
      *
-     * @param throwable The {@link Throwable} that describes the exception.
-     * @param sourceClassName The {@link Class} that the exception occurred in.
+     * @param throwable        The {@link Throwable} that describes the exception.
+     * @param sourceClassName  The {@link Class} that the exception occurred in.
      * @param sourceMethodName The Method that the exception occurred in.
-     * @param message The message attached to the exception.
-     * @param threadId The if of the {@link Thread} that caused the exception.
+     * @param message          The message attached to the exception.
+     * @param threadId         The if of the {@link Thread} that caused the exception.
      */
     public void exception(@NonNull final Throwable throwable, @NonNull final String sourceClassName, @NonNull final String sourceMethodName, @NonNull final String message, final int threadId) {
-        if(sourceClassName.equals(getClass().getName())) {
+        if (sourceClassName.equals(getClass().getName())) {
             return;
         }
         insertLog(new ExceptionLog(new SavableThrowable(throwable), sourceClassName, sourceMethodName, message, threadId));
@@ -79,11 +79,22 @@ public class ChannelLogController {
      * Logs that a connection was established.
      *
      * @param remoteAddress The remote that is connected.
-     * @param localAddress The local address that is being connected to.
-     * @param networkName The name of the network that is connected.
+     * @param localAddress  The local address that is being connected to.
+     * @param networkName   The name of the network that is connected.
      */
     public void connected(@NonNull final String remoteAddress, @NonNull final String localAddress, @NonNull final String networkName) {
         insertLog(new ConnectionLog(remoteAddress, localAddress, networkName));
+    }
+
+    /**
+     * Logs that a connection was closed.
+     *
+     * @param remoteAddress The remote that is connected.
+     * @param localAddress  The local address that is being connected to.
+     * @param networkName   The name of the network that is connected.
+     */
+    public void disconnected(@NonNull final String remoteAddress, @NonNull final String localAddress, @NonNull final String networkName) {
+        insertLog(new DisconnectionLog(remoteAddress, localAddress, networkName));
     }
 
     /**
@@ -91,5 +102,13 @@ public class ChannelLogController {
      */
     public void message(@NonNull final Message message, @NonNull final MetaData metaData) {
         insertLog(new MessageLog(message.getTypeIdentifier(), metaData.getInputSender(), GSON.toJson(message)));
+    }
+
+    /**
+     * @param memoryLoad The load on the memory.
+     * @param cpuLoad    The load on the CPU.
+     */
+    public void resourceUsage(final double memoryLoad, final double cpuLoad) {
+        insertLog(new ResourceLog(memoryLoad, cpuLoad));
     }
 }

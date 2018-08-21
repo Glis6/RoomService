@@ -3,8 +3,10 @@ package com.glis.io.firebase;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import io.github.cdimascio.dotenv.Dotenv;
 
 import java.io.FileInputStream;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
@@ -20,11 +22,12 @@ public class FirebaseBootstrap {
      * Binds the Firebase credentials to the app.
      */
     public void bind() throws Exception {
+        final String firebaseUrl = Dotenv.load().get("firebaseUrl");
         FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(new FileInputStream("ignored/serviceAccountKey.json"))) //TODO CONFIG FILE
-                .setDatabaseUrl("https://roomservice-2018.firebaseio.com")
+                .setCredentials(GoogleCredentials.fromStream(new FileInputStream(Objects.requireNonNull(Dotenv.load().get("accountKeyLocation")))))
+                .setDatabaseUrl(firebaseUrl)
                 .build();
         FirebaseApp.initializeApp(options);
-        logger.info("Firebase bound to URL TODO.");
+        logger.info(String.format("Firebase bound to '%s'.", firebaseUrl));
     }
 }

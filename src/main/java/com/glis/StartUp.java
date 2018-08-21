@@ -1,6 +1,8 @@
 package com.glis;
 
+import com.glis.domain.DomainController;
 import com.glis.io.firebase.FirebaseBootstrap;
+import com.glis.util.ResourcesMonitor;
 import com.glis.util.ShutdownHook;
 
 import java.util.logging.Handler;
@@ -18,6 +20,8 @@ public class StartUp {
         Logger logger = LogManager.getLogManager().getLogger("");
         logger.info("Binding Firebase...");
         new FirebaseBootstrap().bind();
+        final DomainController domainController = ApplicationContextProvider.getApplicationContext().getBean(DomainController.class);
+        new ResourcesMonitor(domainController).start();
 
         //Adds all log handlers.
         logger.info("Adding all " + Handler.class.getSimpleName() + "s...");
@@ -36,6 +40,6 @@ public class StartUp {
                 .forEach(shutdownHook -> Runtime.getRuntime().addShutdownHook(shutdownHook));
         logger.info("Added all " + ShutdownHook.class.getSimpleName() + "s.");
 
-        new Bootstrap().bind();
+        new Bootstrap(domainController).bind();
     }
 }
