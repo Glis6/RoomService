@@ -1,7 +1,7 @@
 package com.glis;
 
 import com.glis.domain.DomainController;
-import com.glis.io.network.server.ServerNetworkPipeline;
+import com.glis.io.network.ServerNetworkPipeline;
 import io.github.cdimascio.dotenv.Dotenv;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -35,7 +35,6 @@ public class Bootstrap {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
-            final String host = Dotenv.load().get("host");
             final int port = Integer.valueOf(Objects.requireNonNull(Dotenv.load().get("port")));
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
@@ -43,8 +42,8 @@ public class Bootstrap {
                     .childHandler(new ServerNetworkPipeline())
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
-            ChannelFuture f = b.bind(host, port).sync();
-            domainController.serverOnline(host, port);
+            ChannelFuture f = b.bind(port).sync();
+            domainController.serverOnline(port);
             f.channel().closeFuture().sync();
         } finally {
             workerGroup.shutdownGracefully();

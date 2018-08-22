@@ -111,4 +111,15 @@ public class ChannelLogController {
     public void resourceUsage(final double memoryLoad, final double cpuLoad) {
         insertLog(new ResourceLog(memoryLoad, cpuLoad));
     }
+
+    /**
+     * @param authorizationResponse The authorization response provided.
+     * @param clientId              The client id provided in the message.
+     * @param clientSecret          The hashed client secret received in the message.
+     * @param remoteAddress         The remote that is attempting to connect.
+     * @param localAddress          The local address that is being connected to.
+     */
+    public void authorizationResponse(@NonNull final String authorizationResponse, @NonNull final String clientId, @NonNull final String clientSecret, @NonNull final String remoteAddress, @NonNull final String localAddress) {
+        insertLog(new AuthorizationResponseLog(authorizationResponse, clientId, clientSecret, remoteAddress, localAddress));
+    }
 }

@@ -20,8 +20,6 @@ public class StartUp {
         Logger logger = LogManager.getLogManager().getLogger("");
         logger.info("Binding Firebase...");
         new FirebaseBootstrap().bind();
-        final DomainController domainController = ApplicationContextProvider.getApplicationContext().getBean(DomainController.class);
-        new ResourcesMonitor(domainController).start();
 
         //Adds all log handlers.
         logger.info("Adding all " + Handler.class.getSimpleName() + "s...");
@@ -40,6 +38,8 @@ public class StartUp {
                 .forEach(shutdownHook -> Runtime.getRuntime().addShutdownHook(shutdownHook));
         logger.info("Added all " + ShutdownHook.class.getSimpleName() + "s.");
 
+        final DomainController domainController = ApplicationContextProvider.getApplicationContext().getBean(DomainController.class);
+        new ResourcesMonitor(domainController).start();
         new Bootstrap(domainController).bind();
     }
 }

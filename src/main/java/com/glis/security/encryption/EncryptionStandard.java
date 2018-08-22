@@ -1,8 +1,5 @@
-package com.glis.security;
+package com.glis.security.encryption;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -21,12 +18,12 @@ public interface EncryptionStandard {
      * @param message The message that is being decrypted.
      * @return The decrypted message, encoded in UTF-8.
      */
-    String decrypt(PrivateKey privateKey, byte[] message) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException;
+    String decrypt(PrivateKey privateKey, byte[] message) throws Exception;
 
     /**
      * @param publicKey The public key to use.
      * @param message The message that is being encrypted.
      * @return The encrypted message, encoded in UTF-8.
      */
-    byte[] encrypt(PublicKey publicKey, String message) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException;
+    byte[] encrypt(PublicKey publicKey, String message) throws Exception;
 }

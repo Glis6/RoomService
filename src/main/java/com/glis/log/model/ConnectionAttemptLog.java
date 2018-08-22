@@ -10,12 +10,12 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class ConnectionAttemptLog extends Log {
     /**
-     * The host address of the connecting host.
+     * The host address of the connecting client.
      */
-    private final String host;
+    private final String remoteAddress;
 
     /**
-     * The port that the host is connecting to.
+     * The local address of the server.
      */
-    private final String port;
+    private final String localAddress;
 }

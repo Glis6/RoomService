@@ -1,6 +1,8 @@
-package com.glis.io.firebase;
+package com.glis.io.firebase.repository;
 
 import com.glis.domain.model.Model;
+import com.glis.io.firebase.FirebasePushIdGenerator;
+import com.glis.io.firebase.converter.ObservableDocumentReferenceConverter;
 import com.glis.io.repository.Repository;
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.Firestore;

@@ -1,4 +1,4 @@
-package com.glis.security;
+package com.glis.security.encryption;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;

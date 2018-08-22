@@ -1,5 +1,6 @@
 package com.glis.io.repository;
 
+import com.glis.domain.model.ClientIdentity;
 import com.glis.domain.model.Profile;
 import com.glis.log.model.Log;
 
@@ -16,4 +17,9 @@ public interface RepositoryManager {
      * @return The {@link LogRepository} that handles with all traffic around {@link Log}s.
      */
     LogRepository getLogRepository();
+
+    /**
+     * @return The {@link ClientIdentityRepository} that handles with all traffic around {@link ClientIdentity}s.
+     */
+    ClientIdentityRepository getClientIdentityRepository();
 }

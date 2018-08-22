@@ -3,8 +3,9 @@ package com.glis.io.network.networktype;
 import com.glis.domain.DomainController;
 import com.glis.io.network.ServerHandler;
 import com.glis.io.network.codec.AuthorizationDecoder;
-import com.glis.io.network.server.ServerAuthorizationHandler;
-import com.glis.io.network.server.ServerLinkData;
+import com.glis.io.network.ServerAuthorizationHandler;
+import com.glis.io.network.ServerLinkData;
+import com.glis.io.network.codec.AuthorizationResponseEncoder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 
@@ -31,11 +32,15 @@ public class ServerHandlerCustomNetworkTypeHandler implements CustomNetworkTypeH
      */
     @Override
     public void doCustom(ChannelHandlerContext channelHandlerContext, LinkData linkData) {
-        channelHandlerContext.writeAndFlush(channelHandlerContext.alloc().buffer(1).writeByte(1));
         final ChannelPipeline pipeline = channelHandlerContext.pipeline();
         try {
-            pipeline.remove(AuthorizationDecoder.class);
             pipeline.remove(ServerAuthorizationHandler.class);
+        } catch (NoSuchElementException ignored) {}
+        try {
+            pipeline.remove(AuthorizationResponseEncoder.class);
+        } catch (NoSuchElementException ignored) {}
+        try {
+            pipeline.remove(AuthorizationDecoder.class);
         } catch (NoSuchElementException ignored) {}
         String networkName = "Unknown";
         if (linkData instanceof ServerLinkData) {

@@ -1,6 +1,7 @@
-package com.glis.io.firebase;
+package com.glis.io.firebase.repository;
 
 import com.glis.domain.model.Profile;
+import com.glis.io.firebase.FirebasePushIdGenerator;
 import com.glis.io.repository.ProfileRepository;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
@@ -21,7 +22,7 @@ public class FirebaseProfileRepository extends FirebaseRepository<Profile> imple
      * @param firestore The {@link Firestore} that is used to access the database.
      * @param firebasePushIdGenerator The {@link FirebasePushIdGenerator} that generates the push ids.
      */
-    FirebaseProfileRepository(@NonNull final Firestore firestore, @NonNull final FirebasePushIdGenerator firebasePushIdGenerator) {
+    public FirebaseProfileRepository(@NonNull final Firestore firestore, @NonNull final FirebasePushIdGenerator firebasePushIdGenerator) {
         super(firestore, firebasePushIdGenerator, Profile.class);
     }
 

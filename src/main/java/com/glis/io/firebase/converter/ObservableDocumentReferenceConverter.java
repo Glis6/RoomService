@@ -1,4 +1,4 @@
-package com.glis.io.firebase;
+package com.glis.io.firebase.converter;
 
 import com.glis.domain.model.Model;
 import com.google.cloud.firestore.DocumentReference;

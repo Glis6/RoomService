@@ -1,4 +1,4 @@
-package com.glis.io.firebase;
+package com.glis.io.firebase.converter;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;

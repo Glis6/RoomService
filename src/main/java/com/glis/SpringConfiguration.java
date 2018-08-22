@@ -20,6 +20,10 @@ import com.glis.io.network.output.dispatcher.SimpleOutputDispatcher;
 import com.glis.io.network.output.handlers.OutputHandler;
 import com.glis.io.repository.RepositoryManager;
 import com.glis.log.LogConfiguration;
+import com.glis.security.encryption.EncryptionStandard;
+import com.glis.security.encryption.RsaEncryption;
+import com.glis.security.hash.HashingStandard;
+import com.glis.security.hash.Sha512Hashing;
 import com.glis.util.HandlerLibrary;
 import com.glis.util.ServerStateShutdown;
 import com.google.firebase.database.FirebaseDatabase;
@@ -40,8 +44,13 @@ import org.springframework.context.annotation.Import;
 public class SpringConfiguration {
 
     @Bean
-    public DomainController domainController(final InputDispatcher inputDispatcher, final OutputDispatcher outputDispatcher, final Memory<String, String> memory, RepositoryManager repositoryManager) throws Exception {
-        return new DomainController(inputDispatcher, outputDispatcher, memory, repositoryManager);
+    public DomainController domainController(final InputDispatcher inputDispatcher,
+                                             final OutputDispatcher outputDispatcher,
+                                             final Memory<String, String> memory,
+                                             final RepositoryManager repositoryManager,
+                                             final EncryptionStandard encryptionStandard,
+                                             final HashingStandard hashingStandard) throws Exception {
+        return new DomainController(inputDispatcher, outputDispatcher, memory, repositoryManager, hashingStandard, encryptionStandard);
     }
 
     @Bean
@@ -82,5 +91,15 @@ public class SpringConfiguration {
     @Bean
     public ServerStateShutdown serverStateShutdown(final Memory<String, String> memory) {
         return new ServerStateShutdown(memory);
+    }
+
+    @Bean
+    public HashingStandard hashingStandard() {
+        return new Sha512Hashing();
+    }
+
+    @Bean
+    public EncryptionStandard encryptionStandard() throws Exception {
+        return new RsaEncryption();
     }
 }

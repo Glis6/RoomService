@@ -1,4 +1,4 @@
-package com.glis.io.firebase;
+package com.glis.io.firebase.converter;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
