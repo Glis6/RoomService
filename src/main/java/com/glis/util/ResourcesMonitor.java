@@ -27,7 +27,7 @@ public class ResourcesMonitor {
     /**
      * The delay between calculating and writing the resources usage.
      */
-    private final static int WRITE_RESOURCE_DELAY = 10;
+    private final static int WRITE_RESOURCE_DELAY = 60;
 
     /**
      * The logger that logs all actions.

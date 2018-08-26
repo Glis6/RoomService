@@ -1,9 +1,9 @@
 package com.glis.domain.model;
 
+import com.glis.led.RgbValues;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -15,7 +15,7 @@ public class Profile extends Model {
     /**
      * An empty profile to use when there is no profile available.
      */
-    public final static Profile EMPTY_PROFILE = new Profile("", Collections.emptyList());
+    public final static Profile EMPTY_PROFILE = new Profile();
 
     /**
      * All tags associated with this profile.
@@ -28,13 +28,9 @@ public class Profile extends Model {
     private List<String> spotifySongIdentifiers;
 
     /**
-     * @param tag The tag associated with the profile.
-     * @param spotifySongIdentifiers All songs that get played when this profile is picked.
+     * The {@link RgbValues} for the profile.
      */
-    private Profile(String tag, List<String> spotifySongIdentifiers) {
-        this.tag = tag;
-        this.spotifySongIdentifiers = spotifySongIdentifiers;
-    }
+    private RgbValues rgbValues;
 
     /**
      * A default constructor.

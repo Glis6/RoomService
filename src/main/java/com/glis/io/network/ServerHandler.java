@@ -63,7 +63,7 @@ public final class ServerHandler extends ChannelInboundHandlerAdapter implements
      * {@inheritDoc}
      */
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
         channel = ctx.channel();
         domainController.notifyConnected(channel.remoteAddress().toString(), channel.localAddress().toString(), getIdentifier());
     }

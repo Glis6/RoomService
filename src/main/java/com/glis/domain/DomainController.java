@@ -9,6 +9,8 @@ import com.glis.io.network.input.dispatcher.InputDispatcher;
 import com.glis.io.network.output.MessageSender;
 import com.glis.io.network.output.dispatcher.OutputDispatcher;
 import com.glis.io.repository.RepositoryManager;
+import com.glis.led.LedController;
+import com.glis.led.RgbValues;
 import com.glis.log.ChannelLogController;
 import com.glis.security.SecurityController;
 import com.glis.security.encryption.EncryptionStandard;
@@ -51,6 +53,12 @@ public class DomainController {
     private final SpotifyController spotifyController;
 
     /**
+     * The {@link LedController} for this instance.
+     */
+    @Getter
+    private final LedController ledController;
+
+    /**
      * The {@link ChannelLogController} that logs all channel activity.
      */
     @Getter
@@ -89,6 +97,7 @@ public class DomainController {
         this.inputDispatcher = inputDispatcher;
         this.outputDispatcher = outputDispatcher;
         this.spotifyController = new SpotifyController(memory);
+        this.ledController = new LedController(memory);
         this.channelLogController = new ChannelLogController(repositoryManager.getLogRepository());
         this.securityController = new SecurityController(hashingStandard, encryptionStandard);
         this.memory = memory;
@@ -131,7 +140,14 @@ public class DomainController {
             final Observable<Optional<Profile>> observableProfileOptional = id.contains(":") ? repositoryManager.getProfileRepository().getBestMatch(id) : repositoryManager.getProfileRepository().get(id);
             final Disposable disposable = observableProfileOptional.subscribe(profileOptional -> {
                 final Profile profile = profileOptional.orElse(Profile.EMPTY_PROFILE);
-                spotifyController.setCurrentSongs(profile.getSpotifySongIdentifiers());
+                if(profile.getSpotifySongIdentifiers() != null) {
+                    spotifyController.setCurrentSongs(profile.getSpotifySongIdentifiers());
+                }
+                if(profile.getRgbValues() != null) {
+                    ledController.setRgbSettings(profile.getRgbValues());
+                } else {
+                    ledController.setRgbSettings(new RgbValues(0, 0, 0));
+                }
             });
             memory.getSharedMemory().setState("currentProfileDisposable", disposable);
             logger.info("Profile loaded from repository.");

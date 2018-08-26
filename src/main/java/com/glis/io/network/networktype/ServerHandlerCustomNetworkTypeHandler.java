@@ -1,20 +1,27 @@
 package com.glis.io.network.networktype;
 
 import com.glis.domain.DomainController;
-import com.glis.io.network.ServerHandler;
-import com.glis.io.network.codec.AuthorizationDecoder;
 import com.glis.io.network.ServerAuthorizationHandler;
+import com.glis.io.network.ServerHandler;
 import com.glis.io.network.ServerLinkData;
+import com.glis.io.network.codec.AuthorizationDecoder;
 import com.glis.io.network.codec.AuthorizationResponseEncoder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 
 import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Glis
  */
 public class ServerHandlerCustomNetworkTypeHandler implements CustomNetworkTypeHandler {
+    /**
+     * The {@link Logger} for this class.
+     */
+    private final Logger logger = Logger.getLogger(getClass().getSimpleName());
+
     /**
      * The {@link DomainController} that is used for this instance.
      */
@@ -47,6 +54,12 @@ public class ServerHandlerCustomNetworkTypeHandler implements CustomNetworkTypeH
             final ServerLinkData serverLinkData = (ServerLinkData) linkData;
             networkName = serverLinkData.getNetworkName();
         }
-        pipeline.addFirst(new ServerHandler(domainController, networkName));
+        final ServerHandler serverHandler = new ServerHandler(domainController, networkName);
+        pipeline.addFirst(serverHandler);
+        try {
+            serverHandler.channelRegistered(channelHandlerContext);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Was unable to register the channel for the server handler.", e);
+        }
     }
 }

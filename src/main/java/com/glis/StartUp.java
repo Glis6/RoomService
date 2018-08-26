@@ -40,6 +40,7 @@ public class StartUp {
 
         final DomainController domainController = ApplicationContextProvider.getApplicationContext().getBean(DomainController.class);
         new ResourcesMonitor(domainController).start();
+        new CommandLineInput(domainController).start();
         new Bootstrap(domainController).bind();
     }
 }

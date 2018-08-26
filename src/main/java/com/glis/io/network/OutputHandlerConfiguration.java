@@ -1,8 +1,9 @@
 package com.glis.io.network;
 
 import com.glis.domain.DomainController;
-import com.glis.spotify.output.PlaybackOutputHandler;
 import com.glis.io.network.output.handlers.OutputHandler;
+import com.glis.led.LedChangeColorOutputHandler;
+import com.glis.spotify.output.PlaybackOutputHandler;
 import com.glis.spotify.output.SpotifyAccessTokenOutputHandler;
 import com.glis.util.HandlerLibrary;
 import org.springframework.beans.factory.SmartInitializingSingleton;
@@ -19,7 +20,8 @@ public class OutputHandlerConfiguration {
     public SmartInitializingSingleton registerOutputHandlers(final HandlerLibrary<OutputHandler, String> handlerLibrary, final DomainController domainController) {
         return () -> handlerLibrary.registerHandlers(new OutputHandler[]{
                 new PlaybackOutputHandler(domainController),
-                new SpotifyAccessTokenOutputHandler(domainController)
+                new SpotifyAccessTokenOutputHandler(domainController),
+                new LedChangeColorOutputHandler(domainController)
         });
     }
 }
