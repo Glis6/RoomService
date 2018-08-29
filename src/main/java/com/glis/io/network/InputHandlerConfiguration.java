@@ -19,7 +19,6 @@ public class InputHandlerConfiguration {
         return () -> handlerLibrary.registerHandlers(new InputHandler[]{
                 new CommandLineEchoInputHandler(),
                 new ShutdownInputHandler(domainController),
-                new SubscribeInputHandler(domainController),
                 new ProfileInputHandler(domainController),
                 new MessageLogInputHandler(domainController)
         });

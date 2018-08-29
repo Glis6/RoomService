@@ -1,18 +1,13 @@
 package com.glis.io.network;
 
 import com.glis.domain.DomainController;
-import com.glis.io.network.codec.SubscribeMessageDecoder;
 import com.glis.io.network.input.library.MappedMessageLibrary;
 import com.glis.io.network.input.library.MessageLibrary;
 import com.glis.io.network.networktype.*;
-import com.glis.io.network.networktype.ServerBoth;
-import com.glis.io.network.networktype.ServerDownstream;
-import com.glis.io.network.networktype.ServerUpstream;
 import com.glis.message.Message;
 import com.glis.message.ProfileMessage;
 import com.glis.message.ShutdownMessage;
 import com.glis.message.SubscribeMessage;
-import io.netty.channel.ChannelHandlerContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -37,13 +32,7 @@ public class NetworkConfiguration {
 
     @Bean
     public Upstream upstream(final DomainController domainController) {
-        return new ServerUpstream(new ServerHandlerCustomNetworkTypeHandler(domainController) {
-            @Override
-            public void doCustom(ChannelHandlerContext channelHandlerContext, LinkData linkData) {
-                super.doCustom(channelHandlerContext, linkData);
-                channelHandlerContext.pipeline().addFirst(new SubscribeMessageDecoder());
-            }
-        });
+        return new ServerUpstream(new ServerHandlerCustomNetworkTypeHandler(domainController));
     }
 
     @Bean

@@ -44,7 +44,7 @@ public class DomainController {
     /**
      * The {@link OutputDispatcher} used to link the output.
      */
-    private final OutputDispatcher outputDispatcher;
+    private final OutputDispatcher subscriptionDispatcher;
 
     /**
      * The {@link SpotifyController} for this instance.
@@ -95,7 +95,7 @@ public class DomainController {
      */
     public DomainController(InputDispatcher inputDispatcher, OutputDispatcher outputDispatcher, Memory<String, String> memory, RepositoryManager repositoryManager, HashingStandard hashingStandard, EncryptionStandard encryptionStandard) throws Exception {
         this.inputDispatcher = inputDispatcher;
-        this.outputDispatcher = outputDispatcher;
+        this.subscriptionDispatcher = outputDispatcher;
         this.spotifyController = new SpotifyController(memory);
         this.ledController = new LedController(memory);
         this.channelLogController = new ChannelLogController(repositoryManager.getLogRepository());
@@ -119,7 +119,7 @@ public class DomainController {
      * @param messageSender The {@link MessageSender} that is requesting the linking.
      */
     public void handleOutput(String identifier, MessageSender messageSender) throws UnknownHandlerException {
-        outputDispatcher.dispatchToHandler(identifier, messageSender);
+        subscriptionDispatcher.dispatchToHandler(identifier, messageSender);
     }
 
     /**

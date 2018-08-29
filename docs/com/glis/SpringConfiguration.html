@@ -155,7 +155,7 @@ extends java.lang.Object</pre>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code><a href="../../com/glis/domain/DomainController.html" title="class in com.glis.domain">DomainController</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../com/glis/SpringConfiguration.html#domainController-com.glis.io.network.input.dispatcher.InputDispatcher-com.glis.io.network.output.dispatcher.OutputDispatcher-com.glis.domain.memory.Memory-com.glis.io.repository.RepositoryManager-">domainController</a></span>(com.glis.io.network.input.dispatcher.InputDispatcher&nbsp;inputDispatcher,
-                com.glis.io.network.output.dispatcher.OutputDispatcher&nbsp;outputDispatcher,
+                com.glis.io.network.output.dispatcher.OutputDispatcher&nbsp;subscriptionDispatcher,
                 <a href="../../com/glis/domain/memory/Memory.html" title="interface in com.glis.domain.memory">Memory</a>&lt;java.lang.String,java.lang.String&gt;&nbsp;memory,
                 <a href="../../com/glis/io/repository/RepositoryManager.html" title="interface in com.glis.io.repository">RepositoryManager</a>&nbsp;repositoryManager)</code>&nbsp;</td>
 </tr>
@@ -177,7 +177,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>com.glis.io.network.output.dispatcher.OutputDispatcher</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../com/glis/SpringConfiguration.html#outputDispatcher-com.glis.util.HandlerLibrary-">outputDispatcher</a></span>(com.glis.util.HandlerLibrary&lt;com.glis.io.network.output.handlers.OutputHandler,java.lang.String&gt;&nbsp;handlerLibrary)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../com/glis/SpringConfiguration.html#subscriptionDispatcher-com.glis.util.HandlerLibrary-">subscriptionDispatcher</a></span>(com.glis.util.HandlerLibrary&lt;com.glis.io.network.output.handlers.OutputHandler,java.lang.String&gt;&nbsp;handlerLibrary)</code>&nbsp;</td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>com.glis.util.HandlerLibrary&lt;com.glis.io.network.output.handlers.OutputHandler,java.lang.String&gt;</code></td>
@@ -234,7 +234,7 @@ extends java.lang.Object</pre>
 <h4>domainController</h4>
 <pre>@Bean
 public&nbsp;<a href="../../com/glis/domain/DomainController.html" title="class in com.glis.domain">DomainController</a>&nbsp;domainController(com.glis.io.network.input.dispatcher.InputDispatcher&nbsp;inputDispatcher,
-                                                com.glis.io.network.output.dispatcher.OutputDispatcher&nbsp;outputDispatcher,
+                                                com.glis.io.network.output.dispatcher.OutputDispatcher&nbsp;subscriptionDispatcher,
                                                 <a href="../../com/glis/domain/memory/Memory.html" title="interface in com.glis.domain.memory">Memory</a>&lt;java.lang.String,java.lang.String&gt;&nbsp;memory,
                                                 <a href="../../com/glis/io/repository/RepositoryManager.html" title="interface in com.glis.io.repository">RepositoryManager</a>&nbsp;repositoryManager)
                                          throws java.lang.Exception</pre>
@@ -254,14 +254,14 @@ public&nbsp;<a href="../../com/glis/domain/DomainController.html" title="class i
 public&nbsp;com.glis.io.network.input.dispatcher.InputDispatcher&nbsp;inputDispatcher(com.glis.util.HandlerLibrary&lt;com.glis.io.network.input.handlers.InputHandler,java.lang.Object&gt;&nbsp;handlerLibrary)</pre>
 </li>
 </ul>
-<a name="outputDispatcher-com.glis.util.HandlerLibrary-">
+<a name="subscriptionDispatcher-com.glis.util.HandlerLibrary-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>outputDispatcher</h4>
+<h4>subscriptionDispatcher</h4>
 <pre>@Bean
-public&nbsp;com.glis.io.network.output.dispatcher.OutputDispatcher&nbsp;outputDispatcher(com.glis.util.HandlerLibrary&lt;com.glis.io.network.output.handlers.OutputHandler,java.lang.String&gt;&nbsp;handlerLibrary)</pre>
+public&nbsp;com.glis.io.network.output.dispatcher.OutputDispatcher&nbsp;subscriptionDispatcher(com.glis.util.HandlerLibrary&lt;com.glis.io.network.output.handlers.OutputHandler,java.lang.String&gt;&nbsp;handlerLibrary)</pre>
 </li>
 </ul>
 <a name="inputHandlerLibrary--">

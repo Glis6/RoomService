@@ -160,7 +160,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>private com.glis.io.network.output.dispatcher.OutputDispatcher</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../com/glis/domain/DomainController.html#outputDispatcher">outputDispatcher</a></span></code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../com/glis/domain/DomainController.html#subscriptionDispatcher">subscriptionDispatcher</a></span></code>
 <div class="block">The <code>OutputDispatcher</code> used to link the output.</div>
 </td>
 </tr>
@@ -192,7 +192,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr class="altColor">
 <td class="colOne"><code><span class="memberNameLink"><a href="../../../com/glis/domain/DomainController.html#DomainController-com.glis.io.network.input.dispatcher.InputDispatcher-com.glis.io.network.output.dispatcher.OutputDispatcher-com.glis.domain.memory.Memory-com.glis.io.repository.RepositoryManager-">DomainController</a></span>(com.glis.io.network.input.dispatcher.InputDispatcher&nbsp;inputDispatcher,
-                com.glis.io.network.output.dispatcher.OutputDispatcher&nbsp;outputDispatcher,
+                com.glis.io.network.output.dispatcher.OutputDispatcher&nbsp;subscriptionDispatcher,
                 <a href="../../../com/glis/domain/memory/Memory.html" title="interface in com.glis.domain.memory">Memory</a>&lt;java.lang.String,java.lang.String&gt;&nbsp;memory,
                 <a href="../../../com/glis/io/repository/RepositoryManager.html" title="interface in com.glis.io.repository">RepositoryManager</a>&nbsp;repositoryManager)</code>&nbsp;</td>
 </tr>
@@ -275,13 +275,13 @@ extends java.lang.Object</pre>
 <div class="block">The <code>InputDispatcher</code> used to send the input to the correct handler.</div>
 </li>
 </ul>
-<a name="outputDispatcher">
+<a name="subscriptionDispatcher">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>outputDispatcher</h4>
-<pre>private final&nbsp;com.glis.io.network.output.dispatcher.OutputDispatcher outputDispatcher</pre>
+<h4>subscriptionDispatcher</h4>
+<pre>private final&nbsp;com.glis.io.network.output.dispatcher.OutputDispatcher subscriptionDispatcher</pre>
 <div class="block">The <code>OutputDispatcher</code> used to link the output.</div>
 </li>
 </ul>
@@ -340,14 +340,14 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>DomainController</h4>
 <pre>public&nbsp;DomainController(com.glis.io.network.input.dispatcher.InputDispatcher&nbsp;inputDispatcher,
-                        com.glis.io.network.output.dispatcher.OutputDispatcher&nbsp;outputDispatcher,
+                        com.glis.io.network.output.dispatcher.OutputDispatcher&nbsp;subscriptionDispatcher,
                         <a href="../../../com/glis/domain/memory/Memory.html" title="interface in com.glis.domain.memory">Memory</a>&lt;java.lang.String,java.lang.String&gt;&nbsp;memory,
                         <a href="../../../com/glis/io/repository/RepositoryManager.html" title="interface in com.glis.io.repository">RepositoryManager</a>&nbsp;repositoryManager)
                  throws java.lang.Exception</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>inputDispatcher</code> - The <code>InputDispatcher</code> used to send the input to the correct handler.</dd>
-<dd><code>outputDispatcher</code> - The <code>OutputDispatcher</code> used to link the output.</dd>
+<dd><code>subscriptionDispatcher</code> - The <code>OutputDispatcher</code> used to link the output.</dd>
 <dd><code>memory</code> - The <a href="../../../com/glis/domain/memory/Memory.html" title="interface in com.glis.domain.memory"><code>Memory</code></a> of the application.</dd>
 <dd><code>repositoryManager</code> - The <a href="../../../com/glis/io/repository/RepositoryManager.html" title="interface in com.glis.io.repository"><code>RepositoryManager</code></a> that handles all database traffic.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>

@@ -1,6 +1,7 @@
 package com.glis.io.network.networktype;
 
 import com.glis.domain.DomainController;
+import com.glis.exceptions.UnknownHandlerException;
 import com.glis.io.network.ServerAuthorizationHandler;
 import com.glis.io.network.ServerHandler;
 import com.glis.io.network.ServerLinkData;
@@ -42,19 +43,34 @@ public class ServerHandlerCustomNetworkTypeHandler implements CustomNetworkTypeH
         final ChannelPipeline pipeline = channelHandlerContext.pipeline();
         try {
             pipeline.remove(ServerAuthorizationHandler.class);
-        } catch (NoSuchElementException ignored) {}
+        } catch (NoSuchElementException ignored) {
+        }
         try {
             pipeline.remove(AuthorizationResponseEncoder.class);
-        } catch (NoSuchElementException ignored) {}
+        } catch (NoSuchElementException ignored) {
+        }
         try {
             pipeline.remove(AuthorizationDecoder.class);
-        } catch (NoSuchElementException ignored) {}
+        } catch (NoSuchElementException ignored) {
+        }
         String networkName = "Unknown";
         if (linkData instanceof ServerLinkData) {
             final ServerLinkData serverLinkData = (ServerLinkData) linkData;
             networkName = serverLinkData.getNetworkName();
         }
         final ServerHandler serverHandler = new ServerHandler(domainController, networkName);
+
+        //Attempt to link the packages by automatically linking the subscriptions.
+        if (linkData instanceof ServerLinkData) {
+            final ServerLinkData serverLinkData = (ServerLinkData) linkData;
+            for (String subscription : serverLinkData.getSubscriptions()) {
+                try {
+                    domainController.handleOutput(subscription, serverHandler);
+                } catch (UnknownHandlerException e) {
+                    logger.log(Level.SEVERE, "Failed to link the subscription with identifier '" + subscription + "'.", e);
+                }
+            }
+        }
         pipeline.addFirst(serverHandler);
         try {
             serverHandler.channelRegistered(channelHandlerContext);

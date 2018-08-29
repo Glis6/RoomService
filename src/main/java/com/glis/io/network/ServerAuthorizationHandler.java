@@ -104,7 +104,7 @@ public final class ServerAuthorizationHandler extends AuthorizationHandler {
                     ctx.channel().localAddress().toString())
             );
             ctx.writeAndFlush(ctx.alloc().buffer(1).writeByte(clientIdentity.getNetworkType()));
-            networkTypes.get(clientIdentity.getNetworkType()).link(ctx, new ServerLinkData(clientIdentity.getDisplayName()));
+            networkTypes.get(clientIdentity.getNetworkType()).link(ctx, new ServerLinkData(clientIdentity.getDisplayName(), clientIdentity.getSubscriptions()));
             disposables.forEach(Disposable::dispose);
         }));
     }

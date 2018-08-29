@@ -3,6 +3,8 @@ package com.glis.domain.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 /**
  * @author Glis
  */
@@ -18,6 +20,11 @@ public class ClientIdentity extends Model {
      * The description of what the client is.
      */
     private String description;
+
+    /**
+     * The subscriptions that the client is permitted.
+     */
+    private List<String> subscriptions;
 
     /**
      * What type of network the client is.
