@@ -60,6 +60,13 @@ public class ServerHandlerCustomNetworkTypeHandler implements CustomNetworkTypeH
         }
         final ServerHandler serverHandler = new ServerHandler(domainController, networkName);
 
+        pipeline.addFirst(serverHandler);
+        try {
+            serverHandler.channelRegistered(channelHandlerContext);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Was unable to register the channel for the server handler.", e);
+        }
+
         //Attempt to link the packages by automatically linking the subscriptions.
         if (linkData instanceof ServerLinkData) {
             final ServerLinkData serverLinkData = (ServerLinkData) linkData;
@@ -70,12 +77,6 @@ public class ServerHandlerCustomNetworkTypeHandler implements CustomNetworkTypeH
                     logger.log(Level.SEVERE, "Failed to link the subscription with identifier '" + subscription + "'.", e);
                 }
             }
-        }
-        pipeline.addFirst(serverHandler);
-        try {
-            serverHandler.channelRegistered(channelHandlerContext);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Was unable to register the channel for the server handler.", e);
         }
     }
 }
