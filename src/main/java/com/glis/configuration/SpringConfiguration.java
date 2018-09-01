@@ -1,4 +1,4 @@
-package com.glis;
+package com.glis.configuration;
 
 import com.glis.domain.DomainController;
 import com.glis.domain.memory.Memory;

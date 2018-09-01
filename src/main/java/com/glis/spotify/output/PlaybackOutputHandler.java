@@ -4,6 +4,7 @@ import com.glis.domain.DomainController;
 import com.glis.io.network.output.MessageSender;
 import com.glis.io.network.output.handlers.OutputHandler;
 import com.glis.message.PlaybackMessage;
+import com.glis.message.StopPlaybackMessage;
 import com.glis.spotify.SpotifyController;
 import io.reactivex.disposables.Disposable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,8 @@ public class PlaybackOutputHandler implements OutputHandler {
         logger.info("Attempting to link current playback...");
         final Disposable disposable = spotifyController.getPlaybackObservable()
                 .subscribe(playbackOptional ->
-                        playbackOptional.ifPresent(playback ->
-                                messageSender.send(new PlaybackMessage(playback))));
+                        playbackOptional
+                                .ifPresent(playback -> messageSender.send(playback.isEmpty() ? new StopPlaybackMessage() : new PlaybackMessage(playback))));
         messageSender.onClose(disposable::dispose);
         logger.info("Current playback linked.");
     }
