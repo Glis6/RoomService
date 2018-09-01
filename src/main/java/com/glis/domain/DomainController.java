@@ -22,9 +22,12 @@ import lombok.Getter;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * @author Glis
@@ -81,9 +84,9 @@ public class DomainController {
     private final Memory<String, String> memory;
 
     /**
-     * The current amount of connected clients.
+     * A {@link Collection} of currently connected clients.
      */
-    private int connectedClients = 0;
+    private Collection<String> connectedClients = new HashSet<>();
 
     /**
      * @param inputDispatcher    The {@link InputDispatcher} used to send the input to the correct handler.
@@ -175,8 +178,9 @@ public class DomainController {
      */
     public void notifyConnected(@NonNull final String remoteAddress, @NonNull final String localAddress, @NonNull final String networkName) {
         getChannelLogController().connected(remoteAddress, localAddress, networkName);
+        connectedClients.add(networkName);
         try {
-            memory.getSharedObservableMemory().setValue("server_connections", Integer.toString(++connectedClients));
+            memory.getSharedObservableMemory().setValue("server_connections", String.join(";", connectedClients));
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Something went wrong adjusting the connected value in memory.", e);
         }
@@ -191,8 +195,9 @@ public class DomainController {
      */
     public void notifyDisconnected(@NonNull final String remoteAddress, @NonNull final String localAddress, @NonNull final String networkName) {
         getChannelLogController().disconnected(remoteAddress, localAddress, networkName);
+        connectedClients.remove(networkName);
         try {
-            memory.getSharedObservableMemory().setValue("server_connections", Integer.toString(--connectedClients));
+            memory.getSharedObservableMemory().setValue("server_connections", String.join(";", connectedClients));
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Something went wrong adjusting the connected value in memory.", e);
         }
@@ -208,5 +213,20 @@ public class DomainController {
             logger.log(Level.SEVERE, "Something went wrong setting server state to online in memory.", e);
         }
         logger.info(String.format("Server is now online on port %d and accepting connections.", port));
+    }
+
+    /**
+     * Writes the thread activity to the memory.
+     */
+    public void writeThreadsActivity() {
+        try {
+            memory.getSharedObservableMemory().setValue("system_thread_activity", Thread.getAllStackTraces()
+                    .keySet()
+                    .stream()
+                    .map(entry -> entry.getName() + "," + entry.getState())
+                    .collect(Collectors.joining(";")));
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Something went wrong attempting to adjust the cpu activity.", e);
+        }
     }
 }

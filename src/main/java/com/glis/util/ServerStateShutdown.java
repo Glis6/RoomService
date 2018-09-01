@@ -11,6 +11,7 @@ import java.util.logging.Logger;
  * @author Glis
  */
 public final class ServerStateShutdown extends Thread implements ShutdownHook {
+
     /**
      * The {@link Logger} for this class.
      */
@@ -25,6 +26,7 @@ public final class ServerStateShutdown extends Thread implements ShutdownHook {
      * @param memory The {@link Memory} to store the offline state in.
      */
     public ServerStateShutdown(@NonNull final Memory<String, String> memory) {
+        super(ServerStateShutdown.class.getSimpleName());
         this.memory = memory.getSharedObservableMemory();
     }
 
@@ -36,7 +38,8 @@ public final class ServerStateShutdown extends Thread implements ShutdownHook {
         logger.info("Settings server state to 'offline'.");
         try {
             memory.setValue("server_state", "offline");
-            memory.setValue("server_connections", "0");
+            memory.setValue("server_connections", "");
+            memory.setValue("system_thread_activity", "");
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Something went wrong saving the server state as offline.", e);
         }

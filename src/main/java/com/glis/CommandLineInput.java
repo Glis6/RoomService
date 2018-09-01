@@ -29,6 +29,7 @@ public class CommandLineInput extends Thread {
      * @param domainController The {@link DomainController} for this instance.
      */
     public CommandLineInput(DomainController domainController) {
+        super(CommandLineInput.class.getSimpleName());
         this.domainController = domainController;
     }
 

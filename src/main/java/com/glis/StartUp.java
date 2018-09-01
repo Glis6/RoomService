@@ -4,6 +4,7 @@ import com.glis.domain.DomainController;
 import com.glis.io.firebase.FirebaseBootstrap;
 import com.glis.util.ResourcesMonitor;
 import com.glis.util.ShutdownHook;
+import com.glis.util.ThreadMonitor;
 
 import java.util.logging.Handler;
 import java.util.logging.LogManager;
@@ -40,6 +41,7 @@ public class StartUp {
 
         final DomainController domainController = ApplicationContextProvider.getApplicationContext().getBean(DomainController.class);
         new ResourcesMonitor(domainController).start();
+        new ThreadMonitor(domainController).start();
         new CommandLineInput(domainController).start();
         new Bootstrap(domainController).bind();
     }
