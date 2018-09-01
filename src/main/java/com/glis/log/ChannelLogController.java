@@ -105,14 +105,6 @@ public class ChannelLogController {
     }
 
     /**
-     * @param memoryLoad The load on the memory.
-     * @param cpuLoad    The load on the CPU.
-     */
-    public void resourceUsage(final double memoryLoad, final double cpuLoad) {
-        insertLog(new ResourceLog(memoryLoad, cpuLoad));
-    }
-
-    /**
      * @param authorizationResponse The authorization response provided.
      * @param clientId              The client id provided in the message.
      * @param clientSecret          The hashed client secret received in the message.

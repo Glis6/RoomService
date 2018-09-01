@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 /**
  * @author Glis
  */
-public class ThreadMonitor {
+public class ServerMonitor {
     /**
      * The delay between writing the threads to the memory.
      */
@@ -35,27 +35,28 @@ public class ThreadMonitor {
     /**
      * @param domainController The {@link DomainController} for this instance.
      */
-    public ThreadMonitor(final DomainController domainController) {
+    public ServerMonitor(final DomainController domainController) {
         this.domainController = domainController;
     }
 
     /**
-     * Starts the {@link ResourcesMonitor}.
+     * Starts the {@link ServerMonitor}.
      */
     public void start() {
-        executor.scheduleAtFixedRate(new ThreadWriteSlave(), 0, WRITE_THREADS_DELAY, TimeUnit.SECONDS);
+        logger.info("Server status is being monitored.");
+        executor.scheduleAtFixedRate(new MonitorSlave(), 0, WRITE_THREADS_DELAY, TimeUnit.SECONDS);
     }
 
     /**
      * The slave that writes the threads to the memory.
      */
-    class ThreadWriteSlave implements Runnable {
+    class MonitorSlave implements Runnable {
         /**
          * Logs the current CPU usage.
          */
         @Override
         public void run() {
-            domainController.writeThreadsActivity();
+            domainController.writeServerMonitoring();
         }
     }
 }

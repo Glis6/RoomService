@@ -2,9 +2,8 @@ package com.glis;
 
 import com.glis.domain.DomainController;
 import com.glis.io.firebase.FirebaseBootstrap;
-import com.glis.util.ResourcesMonitor;
 import com.glis.util.ShutdownHook;
-import com.glis.util.ThreadMonitor;
+import com.glis.util.ServerMonitor;
 
 import java.util.logging.Handler;
 import java.util.logging.LogManager;
@@ -40,8 +39,7 @@ public class StartUp {
         logger.info("Added all " + ShutdownHook.class.getSimpleName() + "s.");
 
         final DomainController domainController = ApplicationContextProvider.getApplicationContext().getBean(DomainController.class);
-        new ResourcesMonitor(domainController).start();
-        new ThreadMonitor(domainController).start();
+        new ServerMonitor(domainController).start();
         new CommandLineInput(domainController).start();
         new Bootstrap(domainController).bind();
     }

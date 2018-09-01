@@ -40,6 +40,7 @@ public final class ServerStateShutdown extends Thread implements ShutdownHook {
             memory.setValue("server_state", "offline");
             memory.setValue("server_connections", "");
             memory.setValue("system_thread_activity", "");
+            memory.setValue("system_resources_usage", "");
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Something went wrong saving the server state as offline.", e);
         }

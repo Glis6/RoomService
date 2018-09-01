@@ -2,6 +2,7 @@ package com.glis.domain;
 
 import com.glis.domain.memory.Memory;
 import com.glis.domain.model.Profile;
+import com.glis.domain.model.ReadValuePair;
 import com.glis.exceptions.InvalidKeyException;
 import com.glis.exceptions.UnknownHandlerException;
 import com.glis.io.network.input.MetaData;
@@ -16,15 +17,15 @@ import com.glis.security.SecurityController;
 import com.glis.security.encryption.EncryptionStandard;
 import com.glis.security.hash.HashingStandard;
 import com.glis.spotify.SpotifyController;
+import com.sun.management.OperatingSystemMXBean;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import lombok.Getter;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Optional;
+import java.lang.management.ManagementFactory;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -34,6 +35,11 @@ import java.util.stream.Collectors;
  */
 @Component
 public class DomainController {
+    /**
+     * The maximum amount of server activity pairs that are kept.
+     */
+    private final static int MAXIMUM_SERVER_ACTIVITY = 50;
+
     /**
      * The {@link Logger} to use for this class.
      */
@@ -87,6 +93,11 @@ public class DomainController {
      * A {@link Collection} of currently connected clients.
      */
     private Collection<String> connectedClients = new HashSet<>();
+
+    /**
+     * A {@link Queue} of the server activity.
+     */
+    private Queue<ReadValuePair> serverActivity = new ArrayDeque<>();
 
     /**
      * @param inputDispatcher    The {@link InputDispatcher} used to send the input to the correct handler.
@@ -143,10 +154,10 @@ public class DomainController {
             final Observable<Optional<Profile>> observableProfileOptional = id.contains(":") ? repositoryManager.getProfileRepository().getBestMatch(id) : repositoryManager.getProfileRepository().get(id);
             final Disposable disposable = observableProfileOptional.subscribe(profileOptional -> {
                 final Profile profile = profileOptional.orElse(Profile.EMPTY_PROFILE);
-                if(profile.getSpotifySongIdentifiers() != null) {
+                if (profile.getSpotifySongIdentifiers() != null) {
                     spotifyController.setCurrentSongs(profile.getSpotifySongIdentifiers());
                 }
-                if(profile.getRgbValues() != null) {
+                if (profile.getRgbValues() != null) {
                     ledController.setRgbSettings(profile.getRgbValues());
                 } else {
                     ledController.setRgbSettings(new RgbValues(0, 0, 0));
@@ -218,15 +229,44 @@ public class DomainController {
     /**
      * Writes the thread activity to the memory.
      */
-    public void writeThreadsActivity() {
+    public void writeServerMonitoring() {
+        //First we'll save the threads activity.
         try {
             memory.getSharedObservableMemory().setValue("system_thread_activity", Thread.getAllStackTraces()
                     .keySet()
                     .stream()
                     .map(entry -> entry.getName() + "," + entry.getState())
+                    .collect(Collectors.joining(";"))
+            );
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Something went wrong attempting to adjust the thread activity.", e);
+        }
+
+        //Then we'll save the memory & CPU usage.
+        try {
+            OperatingSystemMXBean osMBean = ManagementFactory.newPlatformMXBeanProxy(
+                    ManagementFactory.getPlatformMBeanServer(),
+                    ManagementFactory.OPERATING_SYSTEM_MXBEAN_NAME,
+                    OperatingSystemMXBean.class
+            );
+            final double totalMemory = osMBean.getTotalPhysicalMemorySize();
+            final double usedMemory = totalMemory - osMBean.getFreePhysicalMemorySize();
+            final double percentageMemoryUsed = (usedMemory / totalMemory) * 100;
+            final double percentageCpuUsed = osMBean.getSystemCpuLoad() * 100;
+            final ReadValuePair readValuePair = new ReadValuePair(percentageMemoryUsed, percentageCpuUsed);
+            //Add it first.
+            serverActivity.add(readValuePair);
+            //Check if the length is over the maximum.
+            if (serverActivity.size() > MAXIMUM_SERVER_ACTIVITY) {
+                //If so remove one.
+                serverActivity.poll();
+            }
+            memory.getSharedObservableMemory().setValue("system_resources_usage", serverActivity
+                    .stream()
+                    .map(pair -> pair.getMemoryUsage() + "," + pair.getCpuUsage())
                     .collect(Collectors.joining(";")));
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Something went wrong attempting to adjust the cpu activity.", e);
+            logger.log(Level.SEVERE, "Something went wrong attempting to adjust the cpu & memory load.", e);
         }
     }
 }
