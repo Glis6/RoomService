@@ -19,7 +19,7 @@ public class DecodeColorChangeToMessage implements DecodeLedChangeOutputToMessag
      */
     @Override
     public String getType() {
-        return "colorChange";
+        return "solidColor";
     }
 
     /**
