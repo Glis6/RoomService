@@ -3,6 +3,8 @@ package com.glis.util;
 import com.glis.domain.memory.Memory;
 import com.glis.domain.memory.SharedObservableMemory;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,6 +12,7 @@ import java.util.logging.Logger;
 /**
  * @author Glis
  */
+@Component
 public final class ServerStateShutdown extends Thread implements ShutdownHook {
 
     /**
@@ -25,6 +28,7 @@ public final class ServerStateShutdown extends Thread implements ShutdownHook {
     /**
      * @param memory The {@link Memory} to store the offline state in.
      */
+    @Autowired
     public ServerStateShutdown(@NonNull final Memory<String, String> memory) {
         super(ServerStateShutdown.class.getSimpleName());
         this.memory = memory.getSharedObservableMemory();

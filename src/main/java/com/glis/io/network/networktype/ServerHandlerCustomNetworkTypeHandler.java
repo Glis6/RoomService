@@ -9,6 +9,7 @@ import com.glis.io.network.codec.AuthorizationDecoder;
 import com.glis.io.network.codec.AuthorizationResponseEncoder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
+import org.springframework.stereotype.Component;
 
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
@@ -17,6 +18,7 @@ import java.util.logging.Logger;
 /**
  * @author Glis
  */
+@Component
 public class ServerHandlerCustomNetworkTypeHandler implements CustomNetworkTypeHandler {
     /**
      * The {@link Logger} for this class.

@@ -3,12 +3,14 @@ package com.glis.io.network.input.handlers;
 import com.glis.domain.DomainController;
 import com.glis.io.network.input.MetaData;
 import com.glis.message.ProfileMessage;
+import org.springframework.stereotype.Component;
 
 import java.util.logging.Logger;
 
 /**
  * @author Glis
  */
+@Component
 public class ProfileInputHandler extends DomainControllerRequiredInputHandler<ProfileMessage> {
     /**
      * The {@link Logger} for this class.

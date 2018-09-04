@@ -11,7 +11,6 @@ import com.glis.io.network.output.MessageSender;
 import com.glis.io.network.output.dispatcher.OutputDispatcher;
 import com.glis.io.repository.RepositoryManager;
 import com.glis.led.LedController;
-import com.glis.led.RgbValues;
 import com.glis.log.ChannelLogController;
 import com.glis.security.SecurityController;
 import com.glis.security.encryption.EncryptionStandard;
@@ -22,6 +21,7 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import lombok.Getter;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.management.ManagementFactory;
@@ -107,6 +107,7 @@ public class DomainController {
      * @param encryptionStandard The {@link EncryptionStandard} that encrypts the data.
      * @param hashingStandard    The {@link HashingStandard} that hashes the data.
      */
+    @Autowired
     public DomainController(InputDispatcher inputDispatcher, OutputDispatcher outputDispatcher, Memory<String, String> memory, RepositoryManager repositoryManager, HashingStandard hashingStandard, EncryptionStandard encryptionStandard) throws Exception {
         this.inputDispatcher = inputDispatcher;
         this.subscriptionDispatcher = outputDispatcher;
@@ -156,11 +157,13 @@ public class DomainController {
                 final Profile profile = profileOptional.orElse(Profile.EMPTY_PROFILE);
                 if (profile.getSpotifySongIdentifiers() != null) {
                     spotifyController.setCurrentSongs(profile.getSpotifySongIdentifiers());
-                }
-                if (profile.getRgbValues() != null) {
-                    ledController.setRgbSettings(profile.getRgbValues());
                 } else {
-                    ledController.setRgbSettings(new RgbValues(0, 0, 0));
+                    spotifyController.setCurrentSong("");
+                }
+                if (profile.getLedSettings() != null) {
+                    ledController.changeLedSettings(profile.getLedSettings());
+                } else {
+                    ledController.changeLedSettings("");
                 }
             });
             memory.getSharedMemory().setState("currentProfileDisposable", disposable);

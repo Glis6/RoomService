@@ -3,6 +3,8 @@ package com.glis.log;
 import com.glis.domain.DomainController;
 import com.glis.io.repository.LogRepository;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -15,6 +17,7 @@ import java.util.logging.Logger;
  *
  * @author Glis
  */
+@Service
 public class RepositoryExceptionLogHandler extends Handler {
     /**
      * The {@link Logger} used in this class.
@@ -29,6 +32,7 @@ public class RepositoryExceptionLogHandler extends Handler {
     /**
      * @param domainController The {@link DomainController} for this instance.
      */
+    @Autowired
     public RepositoryExceptionLogHandler(@NonNull final DomainController domainController) {
         this.channelLogController = domainController.getChannelLogController();
     }

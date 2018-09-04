@@ -12,12 +12,12 @@ class LedConstants {
     /**
      * The key for the rgn values.
      */
-    final static String RGB_VALUES_KEY = LED_PREFIX + "rgbValues";
+    final static String RGB_VALUES_KEY = LED_PREFIX + "settings";
 
     /**
      * The key for the last rgb settings.
      */
-    final static String LAST_RGB_SETTINGS_KEY = LED_PREFIX + "lastRgbValues";
+    final static String LAST_LED_SETTINGS_KEY = LED_PREFIX + "lastLedSettings";
 
     /**
      * The key for whether or not the led's are enabled..

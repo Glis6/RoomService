@@ -1,6 +1,5 @@
 package com.glis.domain.model;
 
-import com.glis.led.RgbValues;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -28,9 +27,9 @@ public class Profile extends Model {
     private List<String> spotifySongIdentifiers;
 
     /**
-     * The {@link RgbValues} for the profile.
+     * The led settings for the profile.
      */
-    private RgbValues rgbValues;
+    private String ledSettings;
 
     /**
      * A default constructor.

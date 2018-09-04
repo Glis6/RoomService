@@ -3,13 +3,17 @@ package com.glis.log.input;
 import com.glis.domain.DomainController;
 import com.glis.io.network.input.MetaData;
 import com.glis.io.network.input.handlers.DomainControllerRequiredInputHandler;
+import com.glis.io.network.input.handlers.HandlerPriority;
 import com.glis.log.ChannelLogController;
 import com.glis.message.Message;
 import lombok.NonNull;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Glis
  */
+@Component
+@HandlerPriority(HandlerPriority.Priority.MONITOR)
 public class MessageLogInputHandler extends DomainControllerRequiredInputHandler<Message> {
     /**
      * The {@link ChannelLogController} to write the logs to.
