@@ -31,6 +31,6 @@ public class DecodeBreathingLedEffectToMessage implements DecodeLedChangeOutputT
         if (parts.length < PARTS_REQUIRED) {
             throw new IllegalArgumentException(getClass().getSimpleName() + " requires " + PARTS_REQUIRED + " parts. Got " + parts.length + " parts.");
         }
-        return new LedStripBreathingEffectMessage(new Color(Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3])), Integer.parseInt(parts[4]), Integer.parseInt(parts[5]));
+        return new LedStripBreathingEffectMessage(new Color(Integer.parseInt(parts[3]), Integer.parseInt(parts[4]), Integer.parseInt(parts[5])), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
     }
 }
