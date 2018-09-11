@@ -31,20 +31,24 @@ public class Bootstrap {
     /**
      * Turns on the server.
      */
-    public void bind() throws Exception {
+    void bind() throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             final int port = Integer.valueOf(Objects.requireNonNull(Dotenv.load().get("port")));
-            ServerBootstrap b = new ServerBootstrap();
-            b.group(bossGroup, workerGroup)
+            ServerBootstrap serverBootstrap = new ServerBootstrap();
+            serverBootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new ServerNetworkPipeline())
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
-            ChannelFuture f = b.bind(port).sync();
+            ChannelFuture channelFuture = serverBootstrap
+                    .bind(port)
+                    .sync();
             domainController.serverOnline(port);
-            f.channel().closeFuture().sync();
+            channelFuture.channel()
+                    .closeFuture()
+                    .sync();
         } finally {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();

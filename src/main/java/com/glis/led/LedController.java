@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 import static com.glis.led.LedConstants.LAST_LED_SETTINGS_KEY;
 import static com.glis.led.LedConstants.LED_ENABLED;
-import static com.glis.led.LedConstants.RGB_VALUES_KEY;
+import static com.glis.led.LedConstants.LED_SETTINGS_KEY;
 
 /**
  * @author Glis
@@ -45,12 +45,12 @@ public final class LedController {
                         if (!enabled) {
                             try {
                                 //We get the current state before we set it to nothing.
-                                final RgbValues lastRgbValues = memory.getSharedMemory()
-                                        .getState(LAST_LED_SETTINGS_KEY, RgbValues.class);
+                                final String lastLedSettings = memory.getSharedMemory()
+                                        .getState(LAST_LED_SETTINGS_KEY, String.class);
                                 changeLedSettings("");
 
                                 //We overwrite the memory that holds the nothing with the last state, so it resumes this after.
-                                memory.getSharedMemory().setState(LAST_LED_SETTINGS_KEY, lastRgbValues);
+                                memory.getSharedMemory().setState(LAST_LED_SETTINGS_KEY, lastLedSettings);
                             } catch (InvalidKeyException ignored) {
                             } catch (Exception e) {
                                 logger.log(Level.SEVERE, "Failed to set the led's to nothing and save the last state.", e);
@@ -90,7 +90,7 @@ public final class LedController {
         }
         logger.info("Setting led settings to '" + ledSettings + "'.");
         try {
-            memory.getSharedObservableMemory().setValue(RGB_VALUES_KEY, ledSettings);
+            memory.getSharedObservableMemory().setValue(LED_SETTINGS_KEY, ledSettings);
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Something went wrong setting the new led settings.", e);
         }
@@ -100,6 +100,6 @@ public final class LedController {
      * @return The current settings for the RGB's.
      */
     Observable<Optional<String>> getRgbSettingsObservable() throws Exception {
-        return memory.getSharedObservableMemory().getObservable(RGB_VALUES_KEY, String.class);
+        return memory.getSharedObservableMemory().getObservable(LED_SETTINGS_KEY, String.class);
     }
 }

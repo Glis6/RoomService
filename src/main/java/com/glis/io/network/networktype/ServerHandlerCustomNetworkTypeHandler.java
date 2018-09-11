@@ -62,7 +62,7 @@ public class ServerHandlerCustomNetworkTypeHandler implements CustomNetworkTypeH
         }
         final ServerHandler serverHandler = new ServerHandler(domainController, networkName);
 
-        pipeline.addFirst(serverHandler);
+        pipeline.addLast(serverHandler);
         try {
             serverHandler.channelRegistered(channelHandlerContext);
         } catch (Exception e) {

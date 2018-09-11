@@ -17,4 +17,10 @@ public interface ProfileRepository extends Repository<Profile> {
      * @return An {@link Observable} created from looking up the key.
      */
     Observable<Optional<Profile>> getBestMatch(String key) throws Exception;
+
+    /**
+     * @param tag The tag to look for.
+     * @return An {@link Observable} created from looking up the tag.
+     */
+    Observable<Optional<Profile>> getProfileByTag(String tag) throws Exception;
 }

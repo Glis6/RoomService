@@ -44,4 +44,19 @@ public class FirebaseProfileRepository extends FirebaseRepository<Profile> imple
         }
         return BehaviorSubject.create();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Observable<Optional<Profile>> getProfileByTag(String tag) throws Exception {
+        final List<QueryDocumentSnapshot> documentSnapshots = collectionReference.whereEqualTo("tag", tag)
+                .get()
+                .get()
+                .getDocuments();
+        if(!documentSnapshots.isEmpty()) {
+            return get(documentSnapshots.stream().findAny().get().getId());
+        }
+        return BehaviorSubject.create();
+    }
 }

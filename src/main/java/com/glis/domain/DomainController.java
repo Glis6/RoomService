@@ -152,7 +152,7 @@ public class DomainController {
         logger.info("Old profile observer disposed.");
         logger.info("Loading profile from repository...");
         try {
-            final Observable<Optional<Profile>> observableProfileOptional = id.contains(":") ? repositoryManager.getProfileRepository().getBestMatch(id) : repositoryManager.getProfileRepository().get(id);
+            final Observable<Optional<Profile>> observableProfileOptional = id.contains(":") ? repositoryManager.getProfileRepository().getBestMatch(id) : repositoryManager.getProfileRepository().getProfileByTag(id);
             final Disposable disposable = observableProfileOptional.subscribe(profileOptional -> {
                 final Profile profile = profileOptional.orElse(Profile.EMPTY_PROFILE);
                 if (profile.getSpotifySongIdentifiers() != null) {
